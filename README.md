@@ -7,13 +7,15 @@ The source script. This uses both the minimap2 error detection and matching scri
   
   Script Commands:
   
-    FastaFile1: A fasta file format with numerous sequences.
+    FastaFile1: Sequences that need to be aligned in fasta format. Muscle Sequences.
+    FastaFile2: Sequences that need to be aligned in fasta format. Pbdagcon Sequences.
     Reference: A reference sequence in fasta file format.
     OutputCsv: The name of the csv output.
     Minimap2: The location of the minimap2 application locally or on a server. Necessary only if minimap2 is not in the current directory.
   Example command:
   ```console
-  foo@bar:~$ python Minimap2_Error_Detection.py Pbdagcon_Optimizers/Consensus_result_pbdagcon_pNLnefSBR2_ddAmp368Kb_RCA.fasta_penalty0no1.0nan.fasta NL4.3_reference.txt Pbdagcon_Optimizers/fasta_penalty0.csv
+  foo@bar:~$ python MatchingMusclePbdagcon.py Sparc_HIV_ddAmp368Kb_RCA_reduced_no1.0nan_20.fasta Consensus_result_pbdagcon_pNLnefSBR2_ddAmp368Kb_RCA.fasta_penalty0
+no1.0nan.fasta NL4.3_reference.txt trial_output.csv
   ```
  Csv file output:
   ```console
