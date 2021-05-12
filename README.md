@@ -1,4 +1,4 @@
-RNASequencing
+RNA Sequencing
 
 These python scripts use various sequencing software to locate error types and combine mutiple sequencing techniques for increased performance.
 
