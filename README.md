@@ -2,8 +2,10 @@ RNA Sequencing
 
 These python scripts use various sequencing software to locate error types and combine mutiple sequencing techniques for increased performance.
 
-**First File**: MatchingMusclePbdagcon.py<br/>
+**First File**: MatchingMusclePbdagcon.zip<br/>
 The source script. This uses both the minimap2 error detection and matching script explained below. Takes two files with similar sequences and finds errors within the seqeunces as defined by minimap2. Information is parsed from minimap2 output and manipulated to determine where errors match. Each file is intended to be sequenced by different techniques (ex. Fasta file 1 is muscle and fasta file 2 is pbdagacon).
+<br/>
+<br/>
   
   Script Commands:
   
