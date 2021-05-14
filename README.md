@@ -37,7 +37,8 @@ The source script. This uses both the minimap2 error detection and matching scri
   Reference Long Insertion Positions: ```the actual position numbers of insertion errors longer than a length of 1```<br/>
   Reference Long Deletion Positions: ```the actual position numbers of deletion errors longer than a length of 1```<br/>
 
-The minimap2 output explained below for each fasta file is concatenated to these results. 
+The minimap2 output explained below for each fasta file is concatenated to these results.<br/> 
+A Bed file is also outputted. The format for this file is explained here https://genome.ucsc.edu/FAQ/FAQformat.html#format1.
 <br/>
 <br/>
 <br/>
