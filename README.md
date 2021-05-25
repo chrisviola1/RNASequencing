@@ -2,6 +2,7 @@ RNA Sequencing
 
 These python scripts use various sequencing software to locate error types and combine mutiple sequencing techniques for increased performance.
 <br/>
+<br/>
 Scripts:<br/>
 Script 1: MatchingMusclePbdagcon.py; combines the two other scripts to output the matching data <br/>
 Script 2: Minimap2ErrorDetection.py; parses the minimap2 results and outputs them into a csv file <br/>
