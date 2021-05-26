@@ -382,9 +382,10 @@ def ref_start(mini):
         start_pos(int): an integer of the reference start position
     """
     info = mini
-    occs = findOccurrences(info, '*')
-    info = info[info.find('CL'):occs[1]]
+    #occs = findOccurrences(info, '*')
+    info = info[info.find('CL'):]
     start_pos = int(re.split(r'\t+', info)[3])
+    print(start_pos)
     return start_pos
 
 #finds occurences of a certain character
@@ -613,7 +614,7 @@ for seq in seqs:
     if minimap2.returncode != 0: #when theres an error
         print(minimap2.stderr)
     minimap2 = str(minimap2.stdout.decode())
-    srs = len(minimap2.split("rl:i:0")) - 1
+    #srs = len(minimap2.split("rl:i:0")) - 1
     #stream = os.popen(minimap2_app + " -a -L --cs=long" + " " + ref + " " + "fasta_seq.fasta", "r")
     #minimap2 = stream.read()
     #stream.close()
@@ -642,7 +643,7 @@ for seq in seqs:
     mini_info["Misaligned Front"] = matchingInfo[1]
     mini_info["Aligned"] = matchingInfo[2]
     mini_info["Misaligned Back"] = matchingInfo[3]
-    mini_info["Subreads"] = srs
+    #mini_info["Subreads"] = srs
     mini_info["Mismatches"] = ins_data[0] + ins_data[1] + ins_data[2] + dels_data[0] + dels_data[1] + dels_data[2] + subs_data[0] 
     mini_info["Reference NonHP Insertion"] = ins_data[0] 
     mini_info["Reference NonHP Deletion"] = dels_data[0]
@@ -674,7 +675,7 @@ for seq in seqs:
 #Place into df
 minimap2_results = pd.DataFrame.from_dict(erorr_sequences)
 minimap2_results = minimap2_results[["Name", "Length", "Reference Start Position", "Total Matching Range",
-                                     "Misaligned Front","Aligned","Misaligned Back", "Subreads",
+                                     "Misaligned Front","Aligned","Misaligned Back", #"Subreads",
                                      "Mismatches", "Reference NonHP Insertion","Reference NonHP Deletion","Reference Substitution",
                                      "Reference HP Insertion","Reference HP Deletion","Reference Long Insertion","Reference Long Deletion",
                                      "Consensus NonHP Insertion Positions","Consensus NonHP Deletion Positions",
