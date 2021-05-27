@@ -48,10 +48,10 @@ def primary_strand(mini, name):
     if int(num) == 0 or int(num) == 16:
         primary = True
     if primary == True:
-        strand = mini[0:mini.find('rl:i:0')+6]
+        strand = mini[0:mini.find('rl:i:')+8]
     else:
-        strand = mini[0:mini.find('rl:i:0')+6]
-        print("The strand aligned " + "(" + name + ")" + " is not a primary strand.")
+        strand = mini[0:mini.find('rl:i:')+8]
+        #print("The strand aligned " + "(" + name + ")" + " is not a primary strand.")
     return strand
 
 #For consective errors in a row within in the same error type
@@ -384,8 +384,11 @@ def ref_start(mini):
     info = mini
     #occs = findOccurrences(info, '*')
     info = info[info.find('CL'):]
-    start_pos = int(re.split(r'\t+', info)[3])
-    print(start_pos)
+    start_pos = re.split(r'\t+', info)
+    if len(start_pos) >= 3:
+        start_pos = int(start_pos[3])
+    else:
+        start_pos = 0
     return start_pos
 
 #finds occurences of a certain character
@@ -620,56 +623,57 @@ for seq in seqs:
     #stream.close()
 
     #Gathering Results
-    tags, cs = cs_tags_str(minimap2)
-    minimap2 = primary_strand(minimap2, names[name_i])
-    ref_start_pos = ref_start(minimap2)
-    matchingInfo = matching_area(minimap2)
-
-    #list of data -> 1.nonHp Count, 2. HP Count, 3. Con NonHP pos, 4. Con HP pos, 5. Ref nonHP pos, 6. Ref HP pos, 7. Long del sites
-    ins_data = indels(cs, ref_start_pos - 1, False)
-    dels_data = indels(cs, ref_start_pos - 1, True)
-    subs_data = sub(cs)
+    if "@PG" in minimap2:
+        tags, cs = cs_tags_str(minimap2)
+        minimap2 = primary_strand(minimap2, names[name_i])
+        ref_start_pos = ref_start(minimap2)
+        matchingInfo = matching_area(minimap2)
     
-    #updating ref positions to actual position for subs
-    #dels_data[4] = [x + ref_start_pos for x in dels_data[4]] 
-    #dels_data[5] = [x + ref_start_pos for x in dels_data[5]] 
-    subs_data[2] = [x + ref_start_pos for x in subs_data[2]] 
-
-    mini_info = {}
-    mini_info["Name"] = names[name_i].replace("\n",'')
-    mini_info["Length"] = len(mini_seq(minimap2))
-    mini_info["Reference Start Position"] = ref_start_pos
-    mini_info["Total Matching Range"] = matchingInfo[0]
-    mini_info["Misaligned Front"] = matchingInfo[1]
-    mini_info["Aligned"] = matchingInfo[2]
-    mini_info["Misaligned Back"] = matchingInfo[3]
-    #mini_info["Subreads"] = srs
-    mini_info["Mismatches"] = ins_data[0] + ins_data[1] + ins_data[2] + dels_data[0] + dels_data[1] + dels_data[2] + subs_data[0] 
-    mini_info["Reference NonHP Insertion"] = ins_data[0] 
-    mini_info["Reference NonHP Deletion"] = dels_data[0]
-    mini_info["Reference Substitution"] = subs_data[0]
-    mini_info["Reference HP Insertion"] = ins_data[1]
-    mini_info["Reference HP Deletion"] = dels_data[1]
-    mini_info["Reference Long Insertion"] = ins_data[2]
-    mini_info["Reference Long Deletion"] = dels_data[2]
-    mini_info["Consensus NonHP Insertion Positions"] = ins_data[3]
-    mini_info["Consensus NonHP Deletion Positions"] = dels_data[3]
-    mini_info["Consensus Substitution Positions"] = subs_data[1]
-    mini_info["Consensus HP Insertion Positions"] = ins_data[4]
-    mini_info["Consensus HP Deletion Positions"] = dels_data[4]
-    mini_info["Reference NonHP Insertion Positions"] = ins_data[5]
-    mini_info["Reference NonHP Deletion Positions"] = dels_data[5]
-    mini_info["Reference Substitution Positions"] = subs_data[2]
-    mini_info["Reference HP Insertion Positions"] = ins_data[6]
-    mini_info["Reference HP Deletion Positions"] = dels_data[6]
-    mini_info["Reference Long Insertion Sites"] = ins_data[7]
-    mini_info["Reference Long Deletion Sites"] = dels_data[7]
-    erorr_sequences.append(mini_info)
-    name_i+=1
+        #list of data -> 1.nonHp Count, 2. HP Count, 3. Con NonHP pos, 4. Con HP pos, 5. Ref nonHP pos, 6. Ref HP pos, 7. Long del sites
+        ins_data = indels(cs, ref_start_pos - 1, False)
+        dels_data = indels(cs, ref_start_pos - 1, True)
+        subs_data = sub(cs)
+        
+        #updating ref positions to actual position for subs
+        #dels_data[4] = [x + ref_start_pos for x in dels_data[4]] 
+        #dels_data[5] = [x + ref_start_pos for x in dels_data[5]] 
+        subs_data[2] = [x + ref_start_pos for x in subs_data[2]] 
     
-    seq_count+=1
-    progress = (seq_count/SEQS_LENGTH)*100
-    print('Progress [%.5f%%]\r'%progress, end="")
+        mini_info = {}
+        mini_info["Name"] = names[name_i].replace("\n",'')
+        mini_info["Length"] = len(mini_seq(minimap2))
+        mini_info["Reference Start Position"] = ref_start_pos
+        mini_info["Total Matching Range"] = matchingInfo[0]
+        mini_info["Misaligned Front"] = matchingInfo[1]
+        mini_info["Aligned"] = matchingInfo[2]
+        mini_info["Misaligned Back"] = matchingInfo[3]
+        #mini_info["Subreads"] = srs
+        mini_info["Mismatches"] = ins_data[0] + ins_data[1] + ins_data[2] + dels_data[0] + dels_data[1] + dels_data[2] + subs_data[0] 
+        mini_info["Reference NonHP Insertion"] = ins_data[0] 
+        mini_info["Reference NonHP Deletion"] = dels_data[0]
+        mini_info["Reference Substitution"] = subs_data[0]
+        mini_info["Reference HP Insertion"] = ins_data[1]
+        mini_info["Reference HP Deletion"] = dels_data[1]
+        mini_info["Reference Long Insertion"] = ins_data[2]
+        mini_info["Reference Long Deletion"] = dels_data[2]
+        mini_info["Consensus NonHP Insertion Positions"] = ins_data[3]
+        mini_info["Consensus NonHP Deletion Positions"] = dels_data[3]
+        mini_info["Consensus Substitution Positions"] = subs_data[1]
+        mini_info["Consensus HP Insertion Positions"] = ins_data[4]
+        mini_info["Consensus HP Deletion Positions"] = dels_data[4]
+        mini_info["Reference NonHP Insertion Positions"] = ins_data[5]
+        mini_info["Reference NonHP Deletion Positions"] = dels_data[5]
+        mini_info["Reference Substitution Positions"] = subs_data[2]
+        mini_info["Reference HP Insertion Positions"] = ins_data[6]
+        mini_info["Reference HP Deletion Positions"] = dels_data[6]
+        mini_info["Reference Long Insertion Sites"] = ins_data[7]
+        mini_info["Reference Long Deletion Sites"] = dels_data[7]
+        erorr_sequences.append(mini_info)
+        name_i+=1
+        
+        seq_count+=1
+        progress = (seq_count/SEQS_LENGTH)*100
+        print('Progress [%.5f%%]\r'%progress, end="")
       
     
 #Place into df
