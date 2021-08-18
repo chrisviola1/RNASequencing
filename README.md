@@ -1,10 +1,10 @@
 RNA Sequencing
 
-These python scripts use various sequencing software to locate error types and combine mutiple sequencing techniques for increased performance.
+These python scripts use various sequencing software to locate error types (subsitution, insertion, deletion) and combine mutiple sequencing techniques. This increases detection and validates modification of similar consensus strands. 
 <br/>
 <br/>
 Scripts:<br/>
-Script 1: MatchingMusclePbdagcon.py; combines the two other scripts to output the matching data <br/>
+Script 1: MatchingMusclePbdagcon.py; combines the two scripts below to output the matching data <br/>
 Script 2: Minimap2ErrorDetection.py; parses the minimap2 results and outputs them into a csv file <br/>
 Script 3: MatchingIdentification.py; finds matching errors from two different Minimap2ErrorDetection.py output csv files <br/>
 
@@ -13,8 +13,8 @@ The source script. This uses both the minimap2 error detection and matching scri
   
   Script Commands:
   
-    FastaFile1: Sequences that need to be aligned in fasta format. Muscle Sequences.
-    FastaFile2: Sequences that need to be aligned in fasta format. Pbdagcon Sequences.
+    FastaFile1: Sequences that need to be aligned in fasta format. Example: Muscle Consensus Sequence.
+    FastaFile2: Sequences that need to be aligned in fasta format. Example: Pbdagcon Consensus Sequences.
     Reference: A reference sequence in fasta file format.
     OutputCsv: The name of the csv output.
     Minimap2: The location of the minimap2 application locally or on a server. Necessary only if minimap2 is not in the current directory.
@@ -64,35 +64,54 @@ Parses through minimap2 data and tabulates error type information into a clean a
   foo@bar:~$ python Minimap2_Error_Detection.py Pbdagcon_Optimizers/Consensus_result_pbdagcon_pNLnefSBR2_ddAmp368Kb_RCA.fasta_penalty0no1.0nan.fasta NL4.3_reference.txt Pbdagcon_Optimizers/fasta_penalty0.csv
   ```
  Csv file output:
+  Name: ```The name of the strand```<br/>
+  Length: ```Total number of nucleotides```<br/>
+  Reference Start Position: ```Actual start in a strand```<br/>
+  Total Matching Range:	```Length minimap2 used in it's analysis (can be longer or shorter than length depending on reference)```<br/>
+  Misaligned Front: ```Length minimap2 could not align with reference in the front (upstream)```<br/>
+  Aligned: ```Number aligned correctly with reference for analysis```<br/>
+  Misaligned Back: ```Length minimap2 could not align with reference in the back (downstream)```<br/>
+  Subreads: ``` ********************* ```<br/>
+  Mismatches: ```Number of errors in to5tal```<br/>
+  Reference NonHP Insertion: ```number of non-homopolymers insertion errors```<br/>
+  Reference NonHP Deletion: ```number of non-homopolymers deletion errors```<br/>
+  Reference Substitution: ```number of substitution errors```<br/>
+  Reference HP Insertion: ```number of homopolymers insertion errors```<br/>
+  Reference HP Deletion: ```number of homopolymers deletion errors```<br/>
+  Reference Long Insertion:  ```number of insertion errors longer than a length of 1```<br/>
+  Reference Long Deletion: ```number of deletion errors longer than a length of 1```<br/>
+  Consensus NonHP Insertion Positions: ```position of non-homopolymers insertion errors (start position is 1) (errors length of 1 and >1 are not seperated)```<br/>
+  Consensus NonHP Deletion Positions:  ```position of non-homopolymers deletion errors```<br/>
+  Consensus Substitution Positions:  ```position of substitution errors```<br/>
+  Consensus HP Insertion Positions: ```position of homopolymers insertion errors```<br/>
+  Consensus HP Deletion Positions: ```position of homopolymers deletion errors```<br/>
+  Reference NonHP Insertion Positions:  ```position of non-homopolymers insertion errors (start position is based on reference)```<br/>
+  Reference NonHP Deletion Positions: ```position of non-homopolymers deletion errors```<br/>
+  Reference Substitution Positions: ```position of substitution errors```<br/>
+  Reference HP Insertion Positions: ```position of homopolymers insertion errors```<br/>
+  Reference HP Deletion Positions: ```position of homopolymers deletion errors```<br/>
+  Reference Long Insertion Sites: ```position numbers of insertion errors longer than a length of 1```<br/>
+  Reference Long Deletion Sites: ```position numbers of deletion errors longer than a length of 1```<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+  
+  **Third File**: Matching Identification<br/>
+Parses through two Minimap2 Error Detection Script's csv files explained above and determines where errors in a strand match. Validates and confirms stable modification sites.
+  
+  Script Commands:
+  
+    Minimap2ResultFile1: 1st file path for CSV with the minimap2 Results using Minimap2_Error_Detection.py.
+    Minimap2ResultFile2: 2nd CSV file path using Minimap2_Error_Detection.py.
+    OutputCsv: The matching sites from two differnt consensus generators compiled into a csv file.
+  Example command:
   ```console
-  Name:
-  Length:
-  Reference Start Position:
-  Total Matching Range:	
-  Misaligned Front:
-  Aligned:
-  Misaligned Back:
-  Subreads:
-  Mismatches:
-  Reference NonHP Insertion:
-  Reference NonHP Deletion:
-  Reference Substitution:
-  Reference HP Insertion:
-  Reference HP Deletion:
-  Reference Long Insertion:
-  Reference Long Deletion:
-  Consensus NonHP Insertion Positions:
-  Consensus NonHP Deletion Positions:
-  Consensus Substitution Positions:
-  Consensus HP Insertion Positions:
-  Consensus HP Deletion Positions:
-  Reference NonHP Insertion Positions:
-  Reference NonHP Deletion Positions:
-  Reference Substitution Positions:
-  Reference HP Insertion Positions:
-  Reference HP Deletion Positions:
-  Reference Long Insertion Sites:
-  Reference Long Deletion Sites:
+  foo@bar:~$ python Matching_Identification.py [csv file path 1] [csv file path 2] output.csv
   ```
+ Csv file output: The output is the same as MatchingMusclePbdagcon.py (first script).
+  ```
+  
+ 
   
   
