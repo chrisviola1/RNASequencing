@@ -22,7 +22,7 @@ The source script. This uses both the minimap2 error detection and matching scri
   ```console
   foo@bar:~$ python MatchingMusclePbdagcon.py fastafile1.fasta fastafile2.fasta reference.fasta output.csv
   ```
- Csv file output:
+ CSV file output:
 
   Name: ```The name of the strand```<br/>
   Similar Mismatches Intersection: ```Number of errors occurring in both files```<br/>
@@ -63,7 +63,7 @@ Parses through minimap2 data and tabulates error type information into a clean a
   ```console
   foo@bar:~$ python Minimap2_Error_Detection.py Pbdagcon_Optimizers/Consensus_result_pbdagcon_pNLnefSBR2_ddAmp368Kb_RCA.fasta_penalty0no1.0nan.fasta NL4.3_reference.txt Pbdagcon_Optimizers/fasta_penalty0.csv
   ```
- Csv file output:
+ CSV file output:
   Name: ```The name of the strand```<br/>
   Length: ```Total number of nucleotides```<br/>
   Reference Start Position: ```Actual start in a strand```<br/>
@@ -109,7 +109,7 @@ Parses through two Minimap2 Error Detection Script's csv files explained above a
   ```console
   foo@bar:~$ python Matching_Identification.py [csv file path 1] [csv file path 2] output.csv
   ```
- Csv file output: The output is the same as MatchingMusclePbdagcon.py (first script).
+ CSV file output: The output is the same as MatchingMusclePbdagcon.py (first script).
   ```
   
  
